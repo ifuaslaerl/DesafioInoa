@@ -10,5 +10,5 @@ Aplicacao aplicacao = new(config);
 while (true){
     aplicacao.Processar();
     aplicacao.Debug();
-    Thread.Sleep(1000);
+    await Task.Delay(1000);
 }

@@ -1,57 +1,64 @@
 
 namespace DesafioInoa.src{
     public interface IEstado{
+        void AoEntrar(Aplicacao aplicacao);
         void Processar(Aplicacao aplicacao);
         void Debug(Aplicacao aplicacao);
     }    
 
     public class Compra : IEstado{
-        public Compra(){
+        public static Compra Instancia {get;} = new();
+        public void AoEntrar(Aplicacao aplicacao){
             // TODO: Enviar o email
             Console.WriteLine("Email de compra enviado!");
         }
         public void Processar(Aplicacao aplicacao){
-            double value = aplicacao.cotacao.Agora();
+            double value = aplicacao.Servico.Agora();
             if(value >= aplicacao.UserConfig.PrecoVenda){
-                aplicacao.Atual = new Venda();
+                aplicacao.TrocarEstado(Venda.Instancia);
             }else if(value >= aplicacao.UserConfig.PrecoCompra){
-                aplicacao.Atual = new Espera();
+                aplicacao.TrocarEstado(Espera.Instancia);
             }
         }
         public void Debug(Aplicacao aplicacao){
-            Console.WriteLine($"Estado de Compra! {aplicacao.cotacao.Agora()}");
+            Console.WriteLine($"Estado de Compra! {aplicacao.Servico.Agora()}");
         }
     }
 
     public class Venda : IEstado{
-        public Venda(){
+        public static Venda Instancia {get;} = new();
+        public void AoEntrar(Aplicacao aplicacao){
             // TODO: Enviar o email
             Console.WriteLine("Email de Venda enviado!");
         }
         public void Processar(Aplicacao aplicacao){
-            double value = aplicacao.cotacao.Agora();
+            double value = aplicacao.Servico.Agora();
             if(value <= aplicacao.UserConfig.PrecoCompra){
-                aplicacao.Atual = new Compra();
+                aplicacao.TrocarEstado(Compra.Instancia);
             }else if(value <= aplicacao.UserConfig.PrecoVenda){
-                aplicacao.Atual = new Espera();
+                aplicacao.TrocarEstado(Espera.Instancia);
             }
         }
         public void Debug(Aplicacao aplicacao){
-            Console.WriteLine($"Estado de Venda! {aplicacao.cotacao.Agora()}");
+            Console.WriteLine($"Estado de Venda! {aplicacao.Servico.Agora()}");
         }
     }
 
     public class Espera : IEstado{
+        public static Espera Instancia {get;} = new();
+        public void AoEntrar(Aplicacao aplicacao){
+            
+        }
         public void Processar(Aplicacao aplicacao){
-            double value = aplicacao.cotacao.Agora();
+            double value = aplicacao.Servico.Agora();
             if(value <= aplicacao.UserConfig.PrecoCompra){
-                aplicacao.Atual = new Compra();
+                aplicacao.TrocarEstado(Compra.Instancia);
             }else if(value >= aplicacao.UserConfig.PrecoVenda){
-                aplicacao.Atual = new Venda();
+                aplicacao.TrocarEstado(Venda.Instancia);
             }
         }
         public void Debug(Aplicacao aplicacao){
-            Console.WriteLine($"Estado de espera! {aplicacao.cotacao.Agora()}");
+            Console.WriteLine($"Estado de espera! {aplicacao.Servico.Agora()}");
         }
     }
 
