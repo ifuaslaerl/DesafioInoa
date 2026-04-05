@@ -1,7 +1,7 @@
 ﻿using DesafioInoa.src;
 
-DesafioInoa.src.Config config = DesafioInoa.src.Entrada.Config();
-config = DesafioInoa.src.Entrada.Terminal(config, args);
+Config config = Entrada.Config();
+config = Entrada.Terminal(config, args);
 
 config.Debug();
 
