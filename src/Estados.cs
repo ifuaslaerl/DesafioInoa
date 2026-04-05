@@ -7,10 +7,15 @@ namespace DesafioInoa.src{
 
     public class Compra : IEstado{
         public static Compra Instancia { get; } = new();
-        public Task AoEntrar(Aplicacao aplicacao){
-            // TODO: fazer isso de verdade
-            Console.WriteLine("Email de COMPRA enviado!");
-            return Task.CompletedTask;
+        public async Task AoEntrar(Aplicacao aplicacao){
+            await aplicacao.notificador.EnviarEmail(
+                $"[{aplicacao.UserConfig.Ativo}]: Alerta de Compra",
+                $"Prezado, {aplicacao.UserConfig.SmtpInfo.Usuario}\n" +
+                "O sistema detectou a seguinte atividade:\n" +
+                $"O valor do ativo {aplicacao.UserConfig.Ativo} cruzou " + 
+                $"a sua linha de referência de {aplicacao.UserConfig.PrecoCompra}.\n" +
+                "Atenciosamente,\n Sistema"
+                );
         }
         
         public async Task Processar(Aplicacao aplicacao){
@@ -29,10 +34,15 @@ namespace DesafioInoa.src{
 
     public class Venda : IEstado{
         public static Venda Instancia { get; } = new();
-        public Task AoEntrar(Aplicacao aplicacao){
-            // TODO: Fazer isso de verdade 
-            Console.WriteLine("Email de VENDA enviado!");
-            return Task.CompletedTask;
+        public async Task AoEntrar(Aplicacao aplicacao){
+            await aplicacao.notificador.EnviarEmail(
+                $"[{aplicacao.UserConfig.Ativo}]: Alerta de Venda",
+                $"Prezado, {aplicacao.UserConfig.SmtpInfo.Usuario}\n" +
+                "O sistema detectou a seguinte atividade:\n" +
+                $"O valor do ativo {aplicacao.UserConfig.Ativo} cruzou " + 
+                $"a sua linha de referência de {aplicacao.UserConfig.PrecoVenda}.\n" +
+                "Atenciosamente,\n Sistema"
+                );
         }
         
         public async Task Processar(Aplicacao aplicacao){

@@ -1,0 +1,7 @@
+{
+  "Servidor": "smtp.gmail.com",
+  "Porta": 587,
+  "Usuario": "seu_email@gmail.com",
+  "Senha": "sua_senha_ou_app_password",
+  "EmailDestino": "investidor_destino@gmail.com"
+}
