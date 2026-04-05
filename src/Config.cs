@@ -3,7 +3,7 @@ namespace DesafioInoa.src{
         public string Ativo{get; set;} = "";
         public double PrecoVenda{get; set;}
         public double PrecoCompra{get; set;}   
-        public SMTP? SmtpInfo {get; set;}
+        public required SMTP SmtpInfo {get; set;}
 
         public void Debug(){
             Console.WriteLine(

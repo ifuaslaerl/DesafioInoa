@@ -1,22 +1,14 @@
-﻿DesafioInoa.src.Config config = new();
+﻿using DesafioInoa.src;
 
-// Leio o arquivo de configurações
-if(!DesafioInoa.src.Entrada.Config(config)){
-    return 0;
+DesafioInoa.src.Config config = DesafioInoa.src.Entrada.Config();
+config = DesafioInoa.src.Entrada.Terminal(config, args);
+
+config.Debug();
+
+Aplicacao aplicacao = new(config);
+
+while (true){
+    aplicacao.Processar();
+    aplicacao.Debug();
+    Thread.Sleep(1000);
 }
-
-// Leio a entrada
-if(!DesafioInoa.src.Entrada.Terminal(config, args)){
-    return 0;
-}
-
-// config.debug();
-
-// Inicializo as API's
-// prepararCotacao();
-// prepararEmail();
-
-// Inicio a aplicação
-// Principal.iniciar();
-
-return 0;

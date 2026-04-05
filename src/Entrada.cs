@@ -2,16 +2,15 @@ using System.Text.Json;
 
 namespace DesafioInoa.src{
     public class Entrada{
-        public static bool Terminal(
+        public static Config Terminal(
             Config config,
             string[] args
         ){
             if(args.Length != 3){
-                Console.WriteLine(
+                throw new ArgumentException(
                     "A entrada deve ser no seguinte formato:\n" +
                     "\tdotnet run <Ativo> <PreçoVenda> <PreçoCompra>"
-                    );
-                return false;
+                );
             }
 
             config.Ativo = args[0];
@@ -20,31 +19,33 @@ namespace DesafioInoa.src{
                 config.PrecoVenda = double.Parse(args[1]);
                 config.PrecoCompra = double.Parse(args[2]);
             }
-            catch(FormatException){
-                Console.WriteLine(
+            catch(FormatException ex){
+                throw new FormatException(
                     "Os preços de referência devem ser números reais.\n" +
-                    "\tEx: dotnet run PETR4 22.67 22.59"
-                    );
-                return false;
+                    "\tEx: dotnet run PETR4 22,67 22,59", 
+                    ex
+                );
             }
 
-            return Validador.Validar(config);
+            Validador.Validar(config); 
+
+            return config;
         }
 
-        public static bool Config(
-            Config config,
+        public static Config Config(
             string path = ".config.json"
         ){  
             if (!File.Exists(path)){
-                Console.WriteLine($"O arquivo de configurações \"{path}\" não existe.");
-                return false;
+                throw new FileNotFoundException($"O arquivo de configurações \"{path}\" não existe.");
             }
 
             string arquivo = File.ReadAllText(path);
-            config.SmtpInfo = JsonSerializer.Deserialize<SMTP>(arquivo);
             
-            return true;
+            Config config = new(){
+                SmtpInfo = JsonSerializer.Deserialize<SMTP>(arquivo)!
+            };
+            
+            return config;
         }
-
     }
 }
