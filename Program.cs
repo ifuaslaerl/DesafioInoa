@@ -1,24 +1,22 @@
-﻿using System;
-
-Config config = new();
+﻿DesafioInoa.src.Config config = new();
 
 // Leio o arquivo de configurações
-if(!Entrada.Config(config)){
+if(!DesafioInoa.src.Entrada.Config(config)){
     return 0;
 }
 
 // Leio a entrada
-if(!Entrada.Terminal(config, args)){
+if(!DesafioInoa.src.Entrada.Terminal(config, args)){
     return 0;
 }
 
-config.debug();
+// config.debug();
 
 // Inicializo as API's
 // prepararCotacao();
 // prepararEmail();
 
 // Inicio a aplicação
-// iniciar();
+// Principal.iniciar();
 
 return 0;
