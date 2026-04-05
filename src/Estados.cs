@@ -1,65 +1,71 @@
-
 namespace DesafioInoa.src{
     public interface IEstado{
-        void AoEntrar(Aplicacao aplicacao);
-        void Processar(Aplicacao aplicacao);
+        Task AoEntrar(Aplicacao aplicacao);
+        Task Processar(Aplicacao aplicacao);
         void Debug(Aplicacao aplicacao);
     }    
 
     public class Compra : IEstado{
-        public static Compra Instancia {get;} = new();
-        public void AoEntrar(Aplicacao aplicacao){
-            // TODO: Enviar o email
-            Console.WriteLine("Email de compra enviado!");
+        public static Compra Instancia { get; } = new();
+        public Task AoEntrar(Aplicacao aplicacao){
+            // TODO: fazer isso de verdade
+            Console.WriteLine("Email de COMPRA enviado!");
+            return Task.CompletedTask;
         }
-        public void Processar(Aplicacao aplicacao){
-            double value = aplicacao.Servico.Agora();
+        
+        public async Task Processar(Aplicacao aplicacao){
+            double value = await aplicacao.Servico.AgoraAsync();
+            
             if(value >= aplicacao.UserConfig.PrecoVenda){
-                aplicacao.TrocarEstado(Venda.Instancia);
-            }else if(value >= aplicacao.UserConfig.PrecoCompra){
-                aplicacao.TrocarEstado(Espera.Instancia);
+                await aplicacao.TrocarEstado(Venda.Instancia);
+            }
+            else if(value >= aplicacao.UserConfig.PrecoCompra){
+                await aplicacao.TrocarEstado(Espera.Instancia);
             }
         }
-        public void Debug(Aplicacao aplicacao){
-            Console.WriteLine($"Estado de Compra! {aplicacao.Servico.Agora()}");
-        }
+        
+        public void Debug(Aplicacao aplicacao) => Console.WriteLine($"Estado de Compra Ativo.");
     }
 
     public class Venda : IEstado{
-        public static Venda Instancia {get;} = new();
-        public void AoEntrar(Aplicacao aplicacao){
-            // TODO: Enviar o email
-            Console.WriteLine("Email de Venda enviado!");
+        public static Venda Instancia { get; } = new();
+        public Task AoEntrar(Aplicacao aplicacao){
+            // TODO: Fazer isso de verdade 
+            Console.WriteLine("Email de VENDA enviado!");
+            return Task.CompletedTask;
         }
-        public void Processar(Aplicacao aplicacao){
-            double value = aplicacao.Servico.Agora();
-            if(value <= aplicacao.UserConfig.PrecoCompra){
-                aplicacao.TrocarEstado(Compra.Instancia);
-            }else if(value <= aplicacao.UserConfig.PrecoVenda){
-                aplicacao.TrocarEstado(Espera.Instancia);
-            }
-        }
-        public void Debug(Aplicacao aplicacao){
-            Console.WriteLine($"Estado de Venda! {aplicacao.Servico.Agora()}");
-        }
-    }
-
-    public class Espera : IEstado{
-        public static Espera Instancia {get;} = new();
-        public void AoEntrar(Aplicacao aplicacao){
+        
+        public async Task Processar(Aplicacao aplicacao){
+            double value = await aplicacao.Servico.AgoraAsync();
             
-        }
-        public void Processar(Aplicacao aplicacao){
-            double value = aplicacao.Servico.Agora();
             if(value <= aplicacao.UserConfig.PrecoCompra){
-                aplicacao.TrocarEstado(Compra.Instancia);
-            }else if(value >= aplicacao.UserConfig.PrecoVenda){
-                aplicacao.TrocarEstado(Venda.Instancia);
+                await aplicacao.TrocarEstado(Compra.Instancia);
+            }
+            else if(value <= aplicacao.UserConfig.PrecoVenda){
+                await aplicacao.TrocarEstado(Espera.Instancia);
             }
         }
-        public void Debug(Aplicacao aplicacao){
-            Console.WriteLine($"Estado de espera! {aplicacao.Servico.Agora()}");
-        }
+        
+        public void Debug(Aplicacao aplicacao) => Console.WriteLine($"Estado de Venda Ativo.");
     }
 
+    public class Espera : IEstado
+    {
+        public static Espera Instancia { get; } = new();
+        
+        public Task AoEntrar(Aplicacao aplicacao) => Task.CompletedTask;
+        
+        public async Task Processar(Aplicacao aplicacao){
+            double value = await aplicacao.Servico.AgoraAsync();
+            
+            if(value <= aplicacao.UserConfig.PrecoCompra){
+                await aplicacao.TrocarEstado(Compra.Instancia);
+            }
+            else if(value >= aplicacao.UserConfig.PrecoVenda){
+                await aplicacao.TrocarEstado(Venda.Instancia);
+            }
+        }
+
+        public void Debug(Aplicacao aplicacao) => Console.WriteLine($"Estado de Espera Ativo.");
+    }
 }

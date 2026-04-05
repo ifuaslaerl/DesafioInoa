@@ -7,11 +7,12 @@ namespace DesafioInoa.src{
 
         public void Debug(){
             Console.WriteLine(
-                $"Ativo: {Ativo}\n" +
-                $"PrecoVenda: {PrecoVenda}\n" +
-                $"PrecoCompra: {PrecoCompra}"
+                "Configuração:\n" +
+                $"\tAtivo: {Ativo}\n" +
+                $"\tPreço de venda: {PrecoVenda}\n" +
+                $"\tPreço de compra: {PrecoCompra}"
             );
-            SmtpInfo?.Debug();
+            SmtpInfo.Debug();
         }
     }
 
@@ -28,7 +29,7 @@ namespace DesafioInoa.src{
                 $"\tPorta: {Porta}\n" +
                 $"\tUsuário: {Usuario}\n" +
                 $"\tSenha: {Senha}\n" +
-                $"\tEmailDestino: {EmailDestino}"
+                $"\tEmail de destino: {EmailDestino}"
             );
         }
     }

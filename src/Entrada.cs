@@ -2,7 +2,7 @@ using System.Text.Json;
 
 namespace DesafioInoa.src{
     public class Entrada{
-        public static Config Terminal(
+        public static async Task<Config> Terminal(
             Config config,
             string[] args
         ){
@@ -27,11 +27,11 @@ namespace DesafioInoa.src{
                 );
             }
 
-            Validador.Validar(config); 
+            // Aguardamos a validação da API
+            await Validador.Validar(config); 
 
             return config;
         }
-
         public static Config Config(
             string path = ".config.json"
         ){  
