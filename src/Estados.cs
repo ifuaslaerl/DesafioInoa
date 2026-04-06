@@ -2,7 +2,6 @@ namespace DesafioInoa.src{
     public interface IEstado{
         Task AoEntrar(Aplicacao aplicacao);
         Task Processar(Aplicacao aplicacao);
-        void Debug(Aplicacao aplicacao);
     }    
 
     public class Compra : IEstado{
@@ -21,6 +20,9 @@ namespace DesafioInoa.src{
         public async Task Processar(Aplicacao aplicacao){
             double value = await aplicacao.Servico.AgoraAsync();
             
+            if(aplicacao.UserConfig.SmtpInfo.DebugState) 
+                Console.WriteLine($"Estado de Venda: {value}");
+
             if(value >= aplicacao.UserConfig.PrecoVenda){
                 await aplicacao.TrocarEstado(Venda.Instancia);
             }
@@ -28,8 +30,6 @@ namespace DesafioInoa.src{
                 await aplicacao.TrocarEstado(Espera.Instancia);
             }
         }
-        
-        public void Debug(Aplicacao aplicacao) => Console.WriteLine($"Estado de Compra Ativo.");
     }
 
     public class Venda : IEstado{
@@ -48,6 +48,9 @@ namespace DesafioInoa.src{
         public async Task Processar(Aplicacao aplicacao){
             double value = await aplicacao.Servico.AgoraAsync();
             
+            if(aplicacao.UserConfig.SmtpInfo.DebugState)
+                Console.WriteLine($"Estado de Venda: {value}");
+
             if(value <= aplicacao.UserConfig.PrecoCompra){
                 await aplicacao.TrocarEstado(Compra.Instancia);
             }
@@ -55,8 +58,6 @@ namespace DesafioInoa.src{
                 await aplicacao.TrocarEstado(Espera.Instancia);
             }
         }
-        
-        public void Debug(Aplicacao aplicacao) => Console.WriteLine($"Estado de Venda Ativo.");
     }
 
     public class Espera : IEstado
@@ -68,6 +69,9 @@ namespace DesafioInoa.src{
         public async Task Processar(Aplicacao aplicacao){
             double value = await aplicacao.Servico.AgoraAsync();
             
+            if(aplicacao.UserConfig.SmtpInfo.DebugState)
+                Console.WriteLine($"Estado de Venda: {value}");
+
             if(value <= aplicacao.UserConfig.PrecoCompra){
                 await aplicacao.TrocarEstado(Compra.Instancia);
             }
@@ -75,7 +79,5 @@ namespace DesafioInoa.src{
                 await aplicacao.TrocarEstado(Venda.Instancia);
             }
         }
-
-        public void Debug(Aplicacao aplicacao) => Console.WriteLine($"Estado de Espera Ativo.");
     }
 }

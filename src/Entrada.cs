@@ -6,10 +6,11 @@ namespace DesafioInoa.src{
             Config config,
             string[] args
         ){
-            if(args.Length != 3){
+            if(args.Length < 3){
                 throw new ArgumentException(
-                    "A entrada deve ser no seguinte formato:\n" +
-                    "\tdotnet run <Ativo> <PreçoVenda> <PreçoCompra>"
+                    "A entrada deve ser em um dos seguintes formatos:\n" +
+                    "\tdotnet run <Ativo> <PreçoVenda> <PreçoCompra>\n" +
+                    "\tdotnet run <Ativo> <PrecoVenda> <PrecoCompra> <Segundos>"
                 );
             }
 
@@ -26,6 +27,9 @@ namespace DesafioInoa.src{
                     ex
                 );
             }
+
+            config.Segundos = 10;
+            if(args.Length > 3) config.Segundos = int.Parse(args[3]);
 
             // Aguardamos a validação da API
             await Validador.Validar(config); 

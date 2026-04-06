@@ -9,6 +9,5 @@ namespace DesafioInoa.src{
             await Atual.AoEntrar(this);
         }
         public async Task Processar() => await Atual.Processar(this);
-        public void Debug() => Atual.Debug(this);
     }
 }

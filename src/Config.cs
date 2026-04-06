@@ -2,26 +2,28 @@ namespace DesafioInoa.src{
     public class Config{
         public string Ativo{get; set;} = "";
         public double PrecoVenda{get; set;}
-        public double PrecoCompra{get; set;}   
-        public required SMTP SmtpInfo {get; set;}
-
+        public double PrecoCompra{get; set;}
+        public int Segundos{get; set;}
+        public required SMTP SmtpInfo{get; set;}
         public void Debug(){
             Console.WriteLine(
                 "Configuração:\n" +
                 $"\tAtivo: {Ativo}\n" +
                 $"\tPreço de venda: {PrecoVenda}\n" +
-                $"\tPreço de compra: {PrecoCompra}"
+                $"\tPreço de compra: {PrecoCompra}\n" +
+                $"\tPeríodo de consulta: {Segundos}"
             );
             SmtpInfo.Debug();
         }
     }
 
     public class SMTP{
-        public required string Servidor {get; set;}
-        public required int Porta {get; set;}
-        public required string Usuario {get; set;}
-        public required string Senha {get; set;}
-        public required string EmailDestino {get; set;}
+        public required string Servidor{get; set;}
+        public required int Porta{get; set;}
+        public required string Usuario{get; set;}
+        public required string Senha{get; set;}
+        public required string EmailDestino{get; set;}
+        public required bool DebugState{get; set;}
         public void Debug(){
             Console.WriteLine(
                 "SMTP:\n" +
